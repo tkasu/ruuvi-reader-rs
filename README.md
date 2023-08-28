@@ -14,6 +14,8 @@ The goal is to have lightweight program that:
 
 ## Example usage
 
+### Ad-hoc
+
 ```shell
 cargo build --release
 ```
@@ -21,6 +23,18 @@ cargo build --release
 ```shell
 ./target/release/ruuvi-reader-rs
 ```
+
+### Install to path
+
+```shell
+cargo install --path .
+```
+
+```shell
+ruuvi-reader-rs
+```
+
+### Ouput format
 
 Example output:
 
