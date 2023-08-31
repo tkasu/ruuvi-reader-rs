@@ -21,10 +21,15 @@ struct SensorValuesDef {
     tx_power: Option<i8>,
     movement_counter: Option<u32>,
     measurement_sequence_number: Option<u32>,
+    measurement_ts_ms: u128,
 }
 
 impl From<SensorValues> for SensorValuesDef {
     fn from(protocol_values: SensorValues) -> SensorValuesDef {
+        let now_epoch = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_millis();
         SensorValuesDef {
             humidity: protocol_values.humidity_as_ppm(),
             temperature_millicelsius: protocol_values.temperature_as_millicelsius(),
@@ -34,6 +39,7 @@ impl From<SensorValues> for SensorValuesDef {
             movement_counter: protocol_values.movement_counter(),
             measurement_sequence_number: protocol_values.measurement_sequence_number(),
             mac_address: protocol_values.mac_address(),
+            measurement_ts_ms: now_epoch,
         }
     }
 }
