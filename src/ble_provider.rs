@@ -12,6 +12,12 @@ pub struct BleProvider {
     adapter: Option<Adapter>,
 }
 
+impl Default for BleProvider {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl BleProvider {
     pub fn new() -> Self {
         BleProvider {

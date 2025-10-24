@@ -80,6 +80,7 @@ impl TelemetryProvider for MockProvider {
 
 /// Helper function to create sample sensor values for testing
 /// This creates a valid Ruuvi Data Format 5 payload
+#[allow(clippy::too_many_arguments)]
 fn create_sample_sensor_values(
     mac: [u8; 6],
     temp_millicelsius: i32,
@@ -118,7 +119,7 @@ fn create_sample_sensor_values(
     // Power info: 11 bits battery + 5 bits tx_power
     let battery_raw = battery_mv + 1600; // offset
     let tx_power_raw = ((tx_power_dbm + 40) / 2) as u16; // convert to 5-bit value
-    let power_info = ((battery_raw << 5) | (tx_power_raw & 0x1F)) as u16;
+    let power_info = (battery_raw << 5) | (tx_power_raw & 0x1F);
     payload.extend_from_slice(&power_info.to_be_bytes());
 
     // Movement counter (1 byte)
@@ -206,7 +207,10 @@ mod tests {
         provider.start().await.unwrap();
 
         let value = provider.next().await.unwrap();
-        assert_eq!(value.mac_address(), Some([0x11, 0x22, 0x33, 0x44, 0x55, 0x66]));
+        assert_eq!(
+            value.mac_address(),
+            Some([0x11, 0x22, 0x33, 0x44, 0x55, 0x66])
+        );
         assert_eq!(value.temperature_as_millicelsius(), Some(25000));
         assert_eq!(value.humidity_as_ppm(), Some(600000));
     }

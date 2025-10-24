@@ -49,7 +49,7 @@ pub async fn read_events<P: TelemetryProvider>(
 
     while let Some(sensor_values) = provider.next().await {
         let json = json!(SensorValuesDef::from(sensor_values));
-        println!("{}", json.to_string());
+        println!("{}", json);
     }
 
     Ok(())
@@ -83,7 +83,10 @@ mod tests {
 
         let def = SensorValuesDef::from(sample.clone());
 
-        assert_eq!(def.temperature_millicelsius, sample.temperature_as_millicelsius());
+        assert_eq!(
+            def.temperature_millicelsius,
+            sample.temperature_as_millicelsius()
+        );
         assert_eq!(def.humidity, sample.humidity_as_ppm());
         assert_eq!(def.pressure, sample.pressure_as_pascals());
         assert_eq!(

@@ -99,40 +99,60 @@ Each line output is a JSON object with the following schema:
 
 ### Build Commands
 
+This project includes a Makefile with standard targets. Run `make help` to see all available commands.
+
 ```bash
-# Debug build (faster compilation, slower runtime)
-cargo build
+# Using Make (recommended)
+make build           # Debug build
+make build-release   # Release build (optimized)
+make test            # Run all tests
+make lint            # Run clippy linter
+make format          # Format code with rustfmt
+make clean           # Remove build artifacts
+make run             # Run debug version
+make check           # Check code without building
 
-# Release build (optimized)
-cargo build --release
-
-# Install globally to ~/.cargo/bin
-cargo install --path .
+# Or use cargo directly
+cargo build          # Debug build
+cargo build --release # Release build
+cargo install --path . # Install globally to ~/.cargo/bin
 ```
 
 ### Running
 
 ```bash
-# Run from target directory
+# Using Make
+make run             # Run debug version
+
+# Or run the binary directly
 ./target/release/ruuvi-reader-rs
 
-# Or if installed globally
-ruuvi-reader-rs
-
 # Pipe output to file
-ruuvi-reader-rs > sensor-data.jsonl
+./target/release/ruuvi-reader-rs > sensor-data.jsonl
 
 # Pipe to data forwarder (integration)
-ruuvi-reader-rs | java -jar ../ruuvi-data-forwarder/target/scala-3.3.0/ruuvi-data-forwarder-assembly-*.jar
+./target/release/ruuvi-reader-rs | java -jar ../ruuvi-data-forwarder/target/scala-3.3.0/ruuvi-data-forwarder-assembly-*.jar
 ```
 
 ### Testing
 
-Currently no automated tests. Manual testing:
 ```bash
-cargo run
-# Verify JSON output appears when Ruuvi Tags are in range
+# Using Make
+make test
+
+# Or use cargo directly
+cargo test
+
+# Run specific test
+cargo test test_name
 ```
+
+**Test Coverage:**
+- ✅ 8 unit tests passing
+- BLE provider creation
+- Mock provider functionality
+- Sensor value conversion
+- Event reading pipeline
 
 ## Configuration
 
